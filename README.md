@@ -1,6 +1,5 @@
 # cell-imaging
 prototyping for cell imaging analysis pipeline
 
-Dependencies:
-
+Dependencies:  
 Pillow (PIL)
