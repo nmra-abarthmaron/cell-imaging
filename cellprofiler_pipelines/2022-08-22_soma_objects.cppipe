@@ -168,7 +168,7 @@ SaveImages:[module_num:12|svn_version:'Unknown'|variable_revision_number:16|show
     Append a suffix to the image file name?:No
     Text to append to the image name:
     Saved file format:tiff
-    Output file location:Default Output Folder|Documents/test
+    Output file location:Default Output Folder sub-folder|soma_outlines
     Image bit depth:8-bit integer
     Overwrite existing files without warning?:Yes
     When to save:Every cycle
