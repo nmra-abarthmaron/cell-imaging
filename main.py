@@ -4,32 +4,27 @@ Primary entrypoint for running the data-processing pipeline.
 """
 
 import pathlib
-import skimage.io
 import matplotlib.pyplot as plt
-import os
+from max_project import max_project
+from run_cp_pipeline import run_cp_pipeline
 
 # Path for raw image data (z-stack tifs from confocal)
-data_path = pathlib.Path(
-    '/fsx/raw-data/220810 96w Dye Chem Controls/tifs'
+raw_data_path = pathlib.Path(
+    '/fsx/raw-data/220811 96w 9 Gene KO /tifs'
 )
 # Path for saving max projections
-save_dir = pathlib.Path(
-    '/fsx/processed-data/220810 96w Dye Chem Controls/max_projections'
+mp_data_path = pathlib.Path(
+    '/fsx/processed-data/220811 96w 9 Gene KO /max_projections_test'
 )
 
-# Check if max projections have already been created
-if not save_dir.exists():
-    save_dir.mkdir(parents=True)
+# Path for cp pipeline
+cp_pipeline_path = pathlib.Path(
+    '/home/ubuntu/cell-imaging/cellprofiler_pipelines/2022-08-22_soma_objects.cppipe'
+)
 
-# Create max projections
-for tif in data_path.glob('*.tif'):
+# Create max projections (if they do not already exist)
+max_project(raw_data_path, mp_data_path, overwrite=False)
 
-    # Read image (z-stack), pil plugin required bc of ome-tif xml data
-    img = skimage.io.imread(tif, plugin='pil')
+# Run the cellprofiler pipeline
+cp_data_path = run_cp_pipeline(mp_data_path, cp_pipeline_path)
 
-    # Create max projection
-    max_projection = img.max(axis=0)
-
-    # Save max projection in data_path
-    fname = tif.name
-    skimage.io.imsave(save_dir / fname, max_projection)
