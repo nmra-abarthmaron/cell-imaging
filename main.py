@@ -14,7 +14,7 @@ raw_data_path = pathlib.Path(
 )
 # Path for saving max projections
 mp_data_path = pathlib.Path(
-    '/fsx/processed-data/220811 96w 9 Gene KO /max_projections_test'
+    '/fsx/processed-data/220811 96w 9 Gene KO /max_projections'
 )
 
 # Path for cp pipeline
