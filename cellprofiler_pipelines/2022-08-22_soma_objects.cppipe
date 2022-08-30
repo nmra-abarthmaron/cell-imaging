@@ -121,7 +121,7 @@ MeasureObjectIntensityDistribution:[module_num:8|svn_version:'Unknown'|variable_
     Hidden:1
     Hidden:1
     Hidden:0
-    Calculate intensity Zernikes?:Magnitudes and phase
+    Calculate intensity Zernikes?:Magnitudes only
     Maximum zernike moment:9
     Select objects to measure:soma
     Object to use as center?:These objects
