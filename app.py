@@ -1,15 +1,10 @@
 from dash import Dash, dcc, html, Input, Output, State, ctx
-import plotly.express as px
 import plotly.graph_objects as go
-import plotly.subplots as sp
 import skimage.io as sio
 import pathlib
-import json
-
 import pandas as pd
 
 app = Dash(__name__)
-
 
 # img = sio.imread('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/Plate 2 20x SD_B08_561 SD.tiff')
 exp_path = pathlib.Path('/fsx/processed-data/220811 96w 9 Gene KO /')
@@ -38,11 +33,6 @@ app.layout = html.Div([
             html.Label('Image:'),
             dcc.Dropdown(id='image-dropdown'),
 
-            # Store image name
-            dcc.Store(id='image-name'),
-            # dcc.Store(id='image-idx'),
-            # dcc.Store(id='image-options'),
-
             html.Br(),
             html.Button(id='prev-button', n_clicks=0, children='Prev image'),
             html.Button(id='next-button', n_clicks=0, children='Next image'),
@@ -69,8 +59,6 @@ app.layout = html.Div([
         style={'padding': 10, 'flex': 1, 'max-width': 300}
     ),
     
-    # html.Button(id='next-image-button', n_clicks=0, children='next'),
-
     dcc.Graph(id='soma-outlines')
 
 ], style={'display': 'flex', 'flex-direction': 'row'})
