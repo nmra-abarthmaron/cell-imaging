@@ -29,6 +29,20 @@ pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_obje
 # data['conditions'] = pm.reindex(data.index)
 data = data.reindex(pm.index)
 
+# Reformat soma data
+data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_soma.csv'
+soma_data = pd.read_csv(data_path)
+pm_soma = pd.DataFrame()
+pm_soma['condition'] = pm.loc[soma_data['FileName_TMRM']]['condition']
+# pm_soma.columns = ['condition']
+drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
+drop_columns = np.array(drop_columns).astype(str).flatten()
+
+for col in drop_columns:
+    data = soma_data.drop(
+        soma_data.columns[soma_data.columns.str.contains(col)], axis=1)
+pm = pm_soma
+
 data.index = pm['condition']
 pm.index = pm['condition']
 conditions = pm.index.unique().tolist()
@@ -47,7 +61,8 @@ app.layout = html.Div([
     html.Div([
 
         dcc.Dropdown(
-            value='Mean_soma_Intensity_MedianIntensity_CellROX',
+            value='Intensity_MeanIntensity_CellROX',
+            # value='Mean_soma_Intensity_MedianIntensity_CellROX',
             # value='Mean_soma_AreaShape_Area',
             options=data.columns, id='measurement-dropdown'
         ),
@@ -91,11 +106,11 @@ def update_multi_ch_fig(measurement, ch_names):
         for i_cond in range(len(conditions)):
             bar_data = data[m].loc[conditions[i_cond]]
             fig.add_trace(
-                go.Box(
+                go.Violin(
                     y=bar_data, 
-                    boxpoints='all', pointpos=0, jitter=0.5, 
+                    # points='all', pointpos=0, jitter=0.5, 
                     line={'color': '#444444', 'width': 1},
-                    marker={'color': '#666666', 'size': 4}, 
+                    marker={'color': '#666666', 'size': 3}, 
                     # fillcolor= 'rgb' + str(palette[i_cond]),
                     fillcolor= colorblind[i_cond % len(colorblind)]
                 ),
@@ -137,9 +152,9 @@ def update_single_ch_fig(measurement):
     for i_cond in range(len(conditions)):
         bar_data = data[measurement].loc[conditions[i_cond]]
         fig.add_trace(
-            go.Box(
+            go.Violin(
                 y=bar_data,
-                boxpoints='all', pointpos=0, jitter=0.5, 
+                # boxpoints='all', pointpos=0, jitter=0.5, 
                 line={'color': '#444444', 'width': 2},
                 marker={'color': '#555555', 'size': 6}, 
                 # fillcolor= 'rgb' + str(palette[i_cond]),
