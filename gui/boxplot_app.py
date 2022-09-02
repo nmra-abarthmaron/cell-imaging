@@ -9,6 +9,12 @@ import numpy.matlib as np
 
 app = Dash(__name__)
 
+# neumora color palette
+orange = '#E89377'
+green = '#67C478'
+purple = '#AAAADD'
+blue = '#66CCDD'
+
 # Load processed cellprofiler data from csv
 data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
 data = pd.read_csv(data_path)
@@ -52,32 +58,61 @@ def select_plot_type(measurement):
 
     # Return plotting fn
     if multi_channels:
-        return update_multi_ch_fig(measurement)
+        return update_multi_ch_fig(measurement, channel_names)
     else:
         return update_single_ch_fig(measurement)
 
 
-def update_multi_ch_fig(measurement):
+def update_multi_ch_fig(measurement, ch_names):
     html.Br(),
-    fig = make_subplots(rows=2, cols=2)
+    fig = make_subplots(rows=2, cols=2, subplot_titles=ch_names)
 
+    ch = ch_names[np.where([x in measurement for x in ch_names])[0][0]]
+
+    # Give it a better name
+    m = measurement.replace(ch, 'LysoSensor')
     fig.add_trace(
-        go.Box(x=pm['condition'], y=data[measurement]), row=1, col=1,
+        go.Box(
+            x=pm['condition'], y=data[m], 
+            boxpoints='all', pointpos=0, fillcolor=orange, jitter=0.5,
+            marker={'color': '#666666', 'size': 5}, line={'color': orange}
+        ),
+        row=1, col=1
     )
+    m = measurement.replace(ch, 'CellROX')
     fig.add_trace(
-        go.Box(x=pm['condition'], y=data[measurement]), row=1, col=2,
+        go.Box(
+            x=pm['condition'], y=data[m], 
+            boxpoints='all', pointpos=0, fillcolor=green, jitter=0.5,
+            marker={'color': '#666666', 'size': 5}, line={'color': green}
+        ), 
+        row=1, col=2
     )
+    m = measurement.replace(ch, 'TMRM')
     fig.add_trace(
-        go.Box(x=pm['condition'], y=data[measurement]), row=2, col=1,
+        go.Box(
+            x=pm['condition'], y=data[m], 
+            boxpoints='all', pointpos=0, fillcolor=purple, jitter=0.5,
+            marker={'color': '#666666', 'size': 5}, line={'color': purple}
+        ), 
+        row=2, col=1
     )
+    m = measurement.replace(ch, 'Syto')
     fig.add_trace(
-        go.Box(x=pm['condition'], y=data[measurement]), row=2, col=2,
+        go.Box(
+            x=pm['condition'], y=data[m], 
+            boxpoints='all', pointpos=0, fillcolor=blue, jitter=0.5,
+            marker={'color': '#666666', 'size': 5}, line={'color': blue}
+        ), 
+        row=2, col=2
     )
 
     fig.update_layout(
         width=1280,
         height=768
     )
+    fig.update_xaxes(showgrid=True)
+    fig.update_yaxes(showgrid=True)
     return fig
 
 def update_single_ch_fig(measurement):
