@@ -95,7 +95,7 @@ def update_multi_ch_fig(measurement, ch_names):
                 go.Box(
                     y=bar_data, 
                     boxpoints='all', pointpos=0, jitter=0.5, 
-                    line={'color': '#444444', 'width': 1},
+                    line={'color': '#444444', 'width': 1.5},
                     marker={'color': '#666666', 'size': 4}, 
                     # fillcolor= 'rgb' + str(palette[i_cond]),
                     fillcolor= colorblind[i_cond % len(colorblind)]
