@@ -10,29 +10,17 @@ import numpy.matlib as np
 from itertools import cycle
 import seaborn as sns
 
+from process.cp_image_data import cp_image_data
+
 dash.register_page(__name__)
 
-# Load processed cellprofiler data from csv
-data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
-data = pd.read_csv(data_path)
-
-# Set index to well name
-data.index = data['FileName_TMRM']
-
-# Remove unwanted columns
-drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
-drop_columns = np.array(drop_columns).astype(str).flatten()
-for col in drop_columns:
-    data = data.drop(data.columns[data.columns.str.contains(col)], axis=1)
-
-# Load platemap / well conditions
-pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/220811_well_conditions.csv', index_col='filename')# Add condition labels to well dataframe
-# data['conditions'] = pm.reindex(data.index)
-data = data.reindex(pm.index)
+data, pm, p_vals, p_adj, h = cp_image_data()
+sig_loc = np.where(h)[0]   
 
 data.index = pm['condition']
 pm.index = pm['condition']
 conditions = pm.index.unique().tolist()
+
 
 # neumora color palette
 orange = '#E89377'
@@ -102,7 +90,17 @@ def update_multi_ch_fig(measurement, ch_names):
                 ),
                 row=subplot_inds[0]+1, col=subplot_inds[1]+1
             )
-
+        # fig.add_trace(
+        #     go.Scatter(
+        #         y=np.array(np.ones(sig_loc.shape[0])).flatten() * bar_data.max()*0.95,
+        #         x=sig_loc,line=None,
+        #         marker={'color': '#666666', 'size': 10}
+        #     ),
+        #     row=subplot_inds[0]+1, col=subplot_inds[1]+1
+        # )
+    # for i_c in np.arange(len(conditions)):
+    #     if any(i_c == sig_loc):
+    #         conditions[i_c] = conditions[i_c] + '-*'
     fig.update_layout(
         width=1280,
         height=768,

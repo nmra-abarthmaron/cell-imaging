@@ -10,39 +10,44 @@ import numpy.matlib as np
 from itertools import cycle
 import seaborn as sns
 
+from process.cp_object_data import cp_object_data
+
 dash.register_page(__name__)
 
-# # Load processed cellprofiler data from csv
-# data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
-# data = pd.read_csv(data_path)
+# # # Load processed cellprofiler data from csv
+# # data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
+# # data = pd.read_csv(data_path)
 
-# # Set index to well name
-# data.index = data['FileName_TMRM']
+# # # Set index to well name
+# # data.index = data['FileName_TMRM']
 
-# # Remove unwanted columns
-# drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
+# # # Remove unwanted columns
+# # drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
+# # drop_columns = np.array(drop_columns).astype(str).flatten()
+# # for col in drop_columns:
+# #     data = data.drop(data.columns[data.columns.str.contains(col)], axis=1)
+
+# # Load platemap / well conditions
+# pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/220811_well_conditions.csv', index_col='filename')# Add condition labels to well dataframe
+# # data['conditions'] = pm.reindex(data.index)
+# # data = data.reindex(pm.index)
+
+# # Reformat soma data
+# data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_soma.csv'
+# soma_data = pd.read_csv(data_path)
+# pm_soma = pd.DataFrame()
+# pm_soma['condition'] = pm.loc[soma_data['FileName_TMRM']]['condition']
+# # pm_soma.columns = ['condition']
+# drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
 # drop_columns = np.array(drop_columns).astype(str).flatten()
+
 # for col in drop_columns:
-#     data = data.drop(data.columns[data.columns.str.contains(col)], axis=1)
+#     soma_data = soma_data.drop(soma_data.columns[soma_data.columns.str.contains(col)], axis=1)
+# pm = pm_soma
+# data = soma_data
 
-# Load platemap / well conditions
-pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/220811_well_conditions.csv', index_col='filename')# Add condition labels to well dataframe
-# data['conditions'] = pm.reindex(data.index)
-# data = data.reindex(pm.index)
-
-# Reformat soma data
-data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_soma.csv'
-soma_data = pd.read_csv(data_path)
-pm_soma = pd.DataFrame()
-pm_soma['condition'] = pm.loc[soma_data['FileName_TMRM']]['condition']
-# pm_soma.columns = ['condition']
-drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
-drop_columns = np.array(drop_columns).astype(str).flatten()
-
-for col in drop_columns:
-    soma_data = soma_data.drop(soma_data.columns[soma_data.columns.str.contains(col)], axis=1)
-pm = pm_soma
-data = soma_data
+data, pm, p_vals, p_adj, h = cp_object_data()
+sig_loc = np.where(h)[0]   
 
 data.index = pm['condition']
 pm.index = pm['condition']
