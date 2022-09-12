@@ -1,66 +1,24 @@
-from dash import callback, dcc, html, Input, Output, State, ctx
+from dash import callback, dcc, html, Input, Output
 import dash
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-import plotly.express as px
-import skimage.io as sio
-import pathlib
 import pandas as pd
 import numpy.matlib as np
-from itertools import cycle
-import seaborn as sns
 
-from process.cp_object_data import cp_object_data
+from process.cp_object_data import cp_object_data, object_stats
 
 dash.register_page(__name__)
 
-# # # Load processed cellprofiler data from csv
-# # data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
-# # data = pd.read_csv(data_path)
-
-# # # Set index to well name
-# # data.index = data['FileName_TMRM']
-
-# # # Remove unwanted columns
-# # drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
-# # drop_columns = np.array(drop_columns).astype(str).flatten()
-# # for col in drop_columns:
-# #     data = data.drop(data.columns[data.columns.str.contains(col)], axis=1)
-
-# # Load platemap / well conditions
-# pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/220811_well_conditions.csv', index_col='filename')# Add condition labels to well dataframe
-# # data['conditions'] = pm.reindex(data.index)
-# # data = data.reindex(pm.index)
-
-# # Reformat soma data
-# data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_soma.csv'
-# soma_data = pd.read_csv(data_path)
-# pm_soma = pd.DataFrame()
-# pm_soma['condition'] = pm.loc[soma_data['FileName_TMRM']]['condition']
-# # pm_soma.columns = ['condition']
-# drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
-# drop_columns = np.array(drop_columns).astype(str).flatten()
-
-# for col in drop_columns:
-#     soma_data = soma_data.drop(soma_data.columns[soma_data.columns.str.contains(col)], axis=1)
-# pm = pm_soma
-# data = soma_data
-
-data, pm, p_vals, p_adj, h = cp_object_data()
-sig_loc = np.where(h)[0]   
+measurement = 'Intensity_MedianIntensity_CellROX'
+data, pm = cp_object_data()
 
 data.index = pm['condition']
 pm.index = pm['condition']
 conditions = pm.index.unique().tolist()
+ctrl_cond = ['NT-ctrl']
 
-# neumora color palette
-orange = '#E89377'
-green = '#67C478'
-purple = '#AAAADD'
-blue = '#66CCDD'
 colorblind = ["#0173B2", "#DE8F05", "#029E73", "#D55E00", "#CC78BC",
             "#CA9161", "#FBAFE4", "#949494", "#ECE133", "#56B4E9"]
-palette = sns.color_palette("husl", pm['condition'].unique().shape[0])
 
 layout = html.Div([
 
@@ -68,7 +26,6 @@ layout = html.Div([
 
         dcc.Dropdown(
             value='Intensity_MeanIntensity_CellROX',
-            # value='Mean_soma_Intensity_MedianIntensity_CellROX',
             # value='Mean_soma_AreaShape_Area',
             options=data.columns, id='measurement-dropdown'
         ),
@@ -109,10 +66,15 @@ def update_multi_ch_fig(measurement, ch_names):
         m = measurement.replace(ch, ch_names[i_ch])
         subplot_inds = np.unravel_index(i_ch, [n_rows, n_cols])
 
+        p_vals, p_adj, h  = object_stats(data, m, conditions, ctrl_cond)
+        y_data_max = data[m].max()
+
+        # Draw boxplots, one condition at a time to use diff colors
         for i_cond in range(len(conditions)):
             bar_data = data[m].loc[conditions[i_cond]]
             fig.add_trace(
                 go.Box(
+                    x=i_cond * np.array(np.ones(bar_data.shape[0])).flatten(),
                     y=bar_data, 
                     boxpoints='outliers', pointpos=0, jitter=0.5, 
                     line={'color': '#444444', 'width': 1.5},
@@ -122,6 +84,20 @@ def update_multi_ch_fig(measurement, ch_names):
                 ),
                 row=subplot_inds[0]+1, col=subplot_inds[1]+1
             )
+
+            # Add a star if condiiton is significantly different from ctrl
+            if [conditions[i_cond]] != ctrl_cond: 
+                if h.loc[conditions[i_cond]].bool():
+                    fig.add_trace(
+                        go.Scatter(
+                            y=[y_data_max*1.15],
+                            x=[i_cond],line=None,
+                            marker={'color': '#000000', 'size': 8},
+                            marker_line_width=1.5,
+                            marker_symbol='asterisk'
+                        ),
+                        row=subplot_inds[0]+1, col=subplot_inds[1]+1
+                    )
 
     fig.update_layout(
         width=1280,
@@ -154,6 +130,10 @@ def update_multi_ch_fig(measurement, ch_names):
     return fig
 
 def update_single_ch_fig(measurement):
+
+    p_vals, p_adj, h  = object_stats(data, measurement, conditions, ctrl_cond)
+    y_data_max = data[measurement].max()
+
     fig = go.Figure()
     for i_cond in range(len(conditions)):
         bar_data = data[measurement].loc[conditions[i_cond]]
@@ -163,12 +143,23 @@ def update_single_ch_fig(measurement):
                 boxpoints='outliers', pointpos=0, jitter=0.5, 
                 line={'color': '#444444', 'width': 2},
                 marker={'color': '#555555', 'size': 6}, 
-                # fillcolor= 'rgb' + str(palette[i_cond]),
                 fillcolor=  colorblind[i_cond % len(colorblind)]
 
             )
         )
-    # fig = px.box(x=pm['condition'], y=data[measurement],)
+        # Add a star if condiiton is significantly different from ctrl
+        if [conditions[i_cond]] != ctrl_cond: 
+            if h.loc[conditions[i_cond]].bool():
+                fig.add_trace(
+                    go.Scatter(
+                        y=[y_data_max*1.15],
+                        x=[i_cond],line=None,
+                        marker={'color': '#000000', 'size': 12},
+                        marker_line_width=2,
+                        marker_symbol='asterisk'
+                    )
+                )
+
     fig.update_layout(
         width=1024,
         height=512,

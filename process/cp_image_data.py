@@ -1,17 +1,16 @@
-import pathlib
 import pandas as pd
 import numpy.matlib as np
 from scipy.stats import mannwhitneyu, ttest_ind
 from math import comb
 
-def cp_image_data():
+def cp_image_data(measurement):
+
     data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
     drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
     morphology_file = 'FileName_TMRM'
+
     # Load platemap / well conditions
     pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/220811_well_conditions.csv', index_col='filename')# Add condition labels to well dataframe
-    ctrl_cond = ['NT-ctrl']
-    measurement = 'Mean_soma_Intensity_MedianIntensity_CellROX'
 
     # Load processed cellprofiler data from csv
     data = pd.read_csv(data_path)
@@ -27,13 +26,21 @@ def cp_image_data():
     # Reindex data by platemap filenames to make sure row order is correct
     data = data.reindex(pm.index)
 
+    # Set conditions to index
     data.index = pm['condition']
-    data = data.drop('no_dye', axis=0)
     pm.index = pm['condition']
+
+    # Remove 'no_dye' condition
+    data = data.drop('no_dye', axis=0)
     pm = pm.drop('no_dye', axis=0)
-    conditions = pm.index.unique().tolist()
+
+    return data, pm
+
+def image_stats(data, measurement, conditions, ctrl_cond):    
+
+    # Get 'comparison' conditions (all but control)
     comp_conditions = list(set(conditions) - set(ctrl_cond))
-    comp_conditions = conditions[1:]
+    # comp_conditions = conditions[1:]
 
     p_vals = pd.DataFrame(np.zeros((len(comp_conditions),1)), index=comp_conditions)
     for cond in comp_conditions:
@@ -49,4 +56,4 @@ def cp_image_data():
     p_adj = 0.05 / len(comp_conditions)
     h = p_vals < p_adj
 
-    return data, pm, p_vals, p_adj, h
+    return p_vals, p_adj, h

@@ -1,35 +1,24 @@
-from dash import callback, dcc, html, Input, Output, State, ctx
+from dash import callback, dcc, html, Input, Output
 import dash
 from plotly.subplots import make_subplots
 import plotly.graph_objects as go
-import plotly.express as px
-import skimage.io as sio
-import pathlib
 import pandas as pd
 import numpy.matlib as np
-from itertools import cycle
-import seaborn as sns
 
-from process.cp_image_data import cp_image_data
+from process.cp_image_data import cp_image_data, image_stats
 
 dash.register_page(__name__)
 
-data, pm, p_vals, p_adj, h = cp_image_data()
-sig_loc = np.where(h)[0]   
+measurement = 'Mean_soma_Intensity_MedianIntensity_CellROX'
+data, pm = cp_image_data(measurement)
 
 data.index = pm['condition']
 pm.index = pm['condition']
 conditions = pm.index.unique().tolist()
+ctrl_cond = ['NT-ctrl']
 
-
-# neumora color palette
-orange = '#E89377'
-green = '#67C478'
-purple = '#AAAADD'
-blue = '#66CCDD'
 colorblind = ["#0173B2", "#DE8F05", "#029E73", "#D55E00", "#CC78BC",
             "#CA9161", "#FBAFE4", "#949494", "#ECE133", "#56B4E9"]
-palette = sns.color_palette("husl", pm['condition'].unique().shape[0])
 
 layout = html.Div([
 
@@ -77,10 +66,15 @@ def update_multi_ch_fig(measurement, ch_names):
         m = measurement.replace(ch, ch_names[i_ch])
         subplot_inds = np.unravel_index(i_ch, [n_rows, n_cols])
 
+        p_vals, p_adj, h  = image_stats(data, m, conditions, ctrl_cond)
+        y_data_max = data[m].max()
+
+        # Draw boxplots, one condition at a time to use diff colors
         for i_cond in range(len(conditions)):
             bar_data = data[m].loc[conditions[i_cond]]
             fig.add_trace(
                 go.Box(
+                    x=i_cond * np.array(np.ones(bar_data.shape[0])).flatten(),
                     y=bar_data, 
                     boxpoints='all', pointpos=0, jitter=0.5, 
                     line={'color': '#444444', 'width': 1.5},
@@ -90,17 +84,22 @@ def update_multi_ch_fig(measurement, ch_names):
                 ),
                 row=subplot_inds[0]+1, col=subplot_inds[1]+1
             )
-        # fig.add_trace(
-        #     go.Scatter(
-        #         y=np.array(np.ones(sig_loc.shape[0])).flatten() * bar_data.max()*0.95,
-        #         x=sig_loc,line=None,
-        #         marker={'color': '#666666', 'size': 10}
-        #     ),
-        #     row=subplot_inds[0]+1, col=subplot_inds[1]+1
-        # )
-    # for i_c in np.arange(len(conditions)):
-    #     if any(i_c == sig_loc):
-    #         conditions[i_c] = conditions[i_c] + '-*'
+
+            # Add a star if condiiton is significantly different from ctrl
+            if [conditions[i_cond]] != ctrl_cond: 
+                if h.loc[conditions[i_cond]].bool():
+                    fig.add_trace(
+                        go.Scatter(
+                            y=[y_data_max*1.15],
+                            x=[i_cond],line=None,
+                            marker={'color': '#000000', 'size': 8},
+                            marker_line_width=1.5,
+                            marker_symbol='asterisk'
+                        ),
+                        row=subplot_inds[0]+1, col=subplot_inds[1]+1
+                    )
+
+
     fig.update_layout(
         width=1280,
         height=768,
@@ -132,21 +131,38 @@ def update_multi_ch_fig(measurement, ch_names):
     return fig
 
 def update_single_ch_fig(measurement):
+
+
+    p_vals, p_adj, h  = image_stats(data, measurement, conditions, ctrl_cond)
+    y_data_max = data[measurement].max()
+
     fig = go.Figure()
     for i_cond in range(len(conditions)):
         bar_data = data[measurement].loc[conditions[i_cond]]
         fig.add_trace(
             go.Box(
+                x=i_cond * np.array(np.ones(bar_data.shape[0])).flatten(),
                 y=bar_data,
                 boxpoints='all', pointpos=0, jitter=0.5, 
                 line={'color': '#444444', 'width': 2},
                 marker={'color': '#555555', 'size': 6}, 
-                # fillcolor= 'rgb' + str(palette[i_cond]),
                 fillcolor=  colorblind[i_cond % len(colorblind)]
 
             )
         )
-    # fig = px.box(x=pm['condition'], y=data[measurement],)
+        # Add a star if condiiton is significantly different from ctrl
+        if [conditions[i_cond]] != ctrl_cond: 
+            if h.loc[conditions[i_cond]].bool():
+                fig.add_trace(
+                    go.Scatter(
+                        y=[y_data_max*1.15],
+                        x=[i_cond],line=None,
+                        marker={'color': '#000000', 'size': 12},
+                        marker_line_width=2,
+                        marker_symbol='asterisk'
+                    )
+                )
+
     fig.update_layout(
         width=1024,
         height=512,
