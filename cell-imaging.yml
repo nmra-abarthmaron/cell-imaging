@@ -30,5 +30,6 @@ dependencies:
 - mysqlclient=1.4.4
 - sentry-sdk=0.18.0
 - statsmodels
+- umap-learn
 - pip:
     - cellprofiler

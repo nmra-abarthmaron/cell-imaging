@@ -3,7 +3,7 @@ import numpy.matlib as np
 from scipy.stats import mannwhitneyu, ttest_ind
 from math import comb
 
-def cp_image_data(measurement):
+def cp_image_data():
 
     data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
     drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)

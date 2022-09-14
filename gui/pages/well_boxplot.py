@@ -10,7 +10,7 @@ from process.cp_image_data import cp_image_data, image_stats
 dash.register_page(__name__)
 
 measurement = 'Mean_soma_Intensity_MedianIntensity_CellROX'
-data, pm = cp_image_data(measurement)
+data, pm = cp_image_data()
 
 data.index = pm['condition']
 pm.index = pm['condition']
