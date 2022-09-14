@@ -67,7 +67,8 @@ def update_multi_ch_fig(measurement, ch_names):
         subplot_inds = np.unravel_index(i_ch, [n_rows, n_cols])
 
         p_vals, p_adj, h  = object_stats(data, m, conditions, ctrl_cond)
-        y_data_max = data[m].max()
+        # y_data_max = data[measurement].max()
+        y_plot_max = data[m].quantile(q=0.9999, interpolation='lower')
 
         # Draw boxplots, one condition at a time to use diff colors
         for i_cond in range(len(conditions)):
@@ -90,14 +91,15 @@ def update_multi_ch_fig(measurement, ch_names):
                 if h.loc[conditions[i_cond]].bool():
                     fig.add_trace(
                         go.Scatter(
-                            y=[y_data_max*1.15],
+                            y=[y_plot_max],
                             x=[i_cond],line=None,
-                            marker={'color': '#000000', 'size': 8},
+                            marker={'color': '#800020', 'size': 8},
                             marker_line_width=1.5,
                             marker_symbol='asterisk'
                         ),
                         row=subplot_inds[0]+1, col=subplot_inds[1]+1
                     )
+        fig.update_yaxes(range=[0, y_plot_max*1.1], row=subplot_inds[0]+1, col=subplot_inds[1]+1)
 
     fig.update_layout(
         width=1280,
@@ -133,6 +135,8 @@ def update_single_ch_fig(measurement):
 
     p_vals, p_adj, h  = object_stats(data, measurement, conditions, ctrl_cond)
     y_data_max = data[measurement].max()
+    # y_plot_max = data[measurement].quantile(q=0.9999, interpolation='lower')
+    # y_plot_min = data[measurement].quantile(q=0.0001, interpolation='lower')
 
     fig = go.Figure()
     for i_cond in range(len(conditions)):
@@ -140,6 +144,7 @@ def update_single_ch_fig(measurement):
         fig.add_trace(
             go.Box(
                 y=bar_data,
+                x=i_cond * np.array(np.ones(bar_data.shape[0])).flatten(),
                 boxpoints='outliers', pointpos=0, jitter=0.5, 
                 line={'color': '#444444', 'width': 2},
                 marker={'color': '#555555', 'size': 6}, 
@@ -152,15 +157,16 @@ def update_single_ch_fig(measurement):
             if h.loc[conditions[i_cond]].bool():
                 fig.add_trace(
                     go.Scatter(
-                        y=[y_data_max*1.15],
+                        y=[y_data_max * 1.15],
                         x=[i_cond],line=None,
-                        marker={'color': '#000000', 'size': 12},
+                        marker={'color': '#800020', 'size': 12},
                         marker_line_width=2,
                         marker_symbol='asterisk'
                     )
                 )
 
     fig.update_layout(
+        # yaxis_range=[y_plot_min, y_plot_max],
         width=1024,
         height=512,
         showlegend=False,
