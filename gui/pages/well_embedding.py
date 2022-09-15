@@ -15,7 +15,10 @@ colorblind = ["#0173B2", "#DE8F05", "#029E73", "#D55E00", "#CC78BC",
             "#CA9161", "#FBAFE4", "#949494", "#56B4E9"]
 
 
-data, pm = cp_image_data()
+measurement = 'Mean_soma_Intensity_MedianIntensity_CellROX'
+# data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
+data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-16/soma_image/2022-08-16_soma_image_Image.csv'
+data, pm = cp_image_data(data_path)
 
 data = data - data.mean(axis=0)
 data = data / data.std(axis=0)
