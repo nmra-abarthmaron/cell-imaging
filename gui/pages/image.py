@@ -7,17 +7,19 @@ import pandas as pd
 
 dash.register_page(__name__)
 
-# img = sio.imread('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/Plate 2 20x SD_B08_561 SD.tiff')
 exp_path = pathlib.Path('/fsx/processed-data/220811 96w 9 Gene KO /')
 exps = [x.name for x in exp_path.iterdir() if x.is_dir()]
 img_path = pathlib.Path(
-    '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines'
+    '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects'
 )
 img_df = pd.read_csv(img_path / '220811_well_conditions.csv', index_col='condition')
 
 layout = html.Div([
 
     html.Div([
+            dcc.RadioItems(['soma_mask', 'neurite_mask','soma_outlines'], 'soma_mask', 
+                            labelStyle={'display': 'block'},
+                            id='segmentation-type'),
             html.Br(),
             html.Label('Experiment:'),
             dcc.Dropdown(
@@ -119,21 +121,22 @@ def prev_image(img_options, img_name):
     Output(component_id='soma-outlines', component_property='figure'),
     Input(component_id='image-dropdown', component_property='value'),
     Input('overlay-outlines', 'value'),
-    Input('img-max-slider', 'value')
+    Input('img-max-slider', 'value'),
+    Input('segmentation-type', 'value')
     # Input(component_id='next-image-button', component_property='n_clicks')
 )
-def update_image(img_name, soma_outlines, max_intensity):
+def update_image(img_name, soma_outlines, max_intensity, seg_type):
 
     # Load outline file
     # img_name = pd.read_json(img_name)
     outline_name = img_name + 'f'   # because cp saves them as 'tiff' not 'tif'
-    outline = sio.imread(img_path / outline_name)
+    outline = sio.imread(img_path / seg_type / outline_name)
     outline = outline.astype(object)
     outline[outline == 0] = None
 
     # This is kinda a hack, should be done with the cp image csv
     ch_names = [405, 488, 561, 647]
-    img = sio.imread(img_path.parent.parent /'max_projections'/ img_name.replace('tif', 'tif'))
+    img = sio.imread(img_path.parent /'max_projections'/ img_name.replace('tif', 'tif'))
 
     # Set max intensity
     img[img > (img.max() * max_intensity)] = img.max() * max_intensity
@@ -149,6 +152,7 @@ def update_image(img_name, soma_outlines, max_intensity):
     
 
     fig.update_layout(
+        title=seg_type,
         xaxis={'showticklabels': False},
         yaxis={'showticklabels': False}, 
         width=1024, height=1024

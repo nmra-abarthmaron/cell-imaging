@@ -10,8 +10,8 @@ from process.cp_image_data import cp_image_data, image_stats
 dash.register_page(__name__)
 
 measurement = 'Mean_soma_Intensity_MedianIntensity_CellROX'
-# data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
-data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-16/soma_image/2022-08-16_soma_image_Image.csv'
+data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
+# data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-16/soma_image/2022-08-16_soma_image_Image.csv'
 data, pm = cp_image_data(data_path)
 
 data.index = pm['condition']
@@ -27,8 +27,8 @@ layout = html.Div([
     html.Div([
 
         dcc.Dropdown(
-            # value='Mean_soma_Intensity_MedianIntensity_CellROX',
-            value='Intensity_MedianIntensity_CellROX',
+            value='Mean_soma_Intensity_MedianIntensity_CellROX',
+            # value='Intensity_MedianIntensity_CellROX',
             options=data.columns, id='measurement-dropdown'
         ),
     ], style={'padding': 10, 'flex': 1, 'max-width': 400}),
