@@ -106,6 +106,10 @@ def update_multi_ch_fig(measurement, ch_names):
         width=1280,
         height=768,
         showlegend=False,
+        yaxis1_title="Normalized Intensity",
+        yaxis2_title="Normalized Intensity",
+        yaxis3_title="Normalized Intensity",
+        yaxis4_title="Normalized Intensity",
         xaxis1 = dict(
             tickmode = 'array',
             tickvals = np.arange(len(conditions)),

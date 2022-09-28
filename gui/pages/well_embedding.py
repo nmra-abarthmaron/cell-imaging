@@ -34,23 +34,24 @@ reducer = TSNE(n_components=2, learning_rate='auto', init='pca', perplexity=3, r
 embedded_data = reducer.fit_transform(latent_data)
 embedded_data = pd.DataFrame(embedded_data, 
                              index = data.index,
-                             columns = ['UMAP 1', 'UMAP 2'])
+                             columns = ['tSNE 1', 'tSNE 2'])
 embedded_data['condition'] = pm['condition']
 
 dash.register_page(__name__)
 
 fig = px.scatter(
     embedded_data, 
-    x='UMAP 1', 
-    y='UMAP 2', 
+    x='tSNE 1', 
+    y='tSNE 2', 
     color='condition', 
     symbol='condition',
     color_discrete_sequence=colorblind
 )
-fig.update_traces(marker={'size': 6})
+fig.update_traces(marker={'size': 8})
 fig.update_layout(
         width=830,
-        height=768
+        height=768,
+        font = dict(size=20)
 )
 fig.update_yaxes(automargin=True)
 fig.update_xaxes(automargin=True)
