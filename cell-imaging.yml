@@ -11,13 +11,6 @@ dependencies:
 - pip
 - numpy
 - matplotlib
-- pyyaml
-- h5py
-- scipy
-- click
-- pandas
-- pyarrow
-- scikit-image
 - pandas
 - mysqlclient
 - openjdk
@@ -29,7 +22,13 @@ dependencies:
 - wxpython=4.1.0
 - mysqlclient=1.4.4
 - sentry-sdk=0.18.0
+- cytominer_database
+- dash
+- jupyterlab
+- pycytominer
 - statsmodels
-- umap-learn
 - pip:
-    - cellprofiler
+    - cellprofiler==4.2.4
+    - scikit-image
+    - statannotations
+    - umap-learn
