@@ -3,18 +3,14 @@ import numpy.matlib as np
 from scipy.stats import mannwhitneyu, ttest_ind
 from math import comb
 
-def cp_image_data(data_path):
+def cp_image_data(data_path, pm, drop_columns):
 
-    drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
-    morphology_file = 'FileName_TMRM'
-
-    # Load platemap / well conditions
-    pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/220811_well_conditions.csv', index_col='filename')# Add condition labels to well dataframe
 
     # Load processed cellprofiler data from csv
     data = pd.read_csv(data_path)
 
     # Set index to well name
+    morphology_file = 'FileName_TMRM'
     data.index = data[morphology_file]
 
     # Remove unwanted columns
@@ -30,8 +26,9 @@ def cp_image_data(data_path):
     pm.index = pm['condition']
 
     # Remove 'no_dye' condition
-    data = data.drop('no_dye', axis=0)
-    pm = pm.drop('no_dye', axis=0)
+    if 'no_dye' in data.index:
+        data = data.drop('no_dye', axis=0)
+        pm = pm.drop('no_dye', axis=0)
 
     return data, pm
 

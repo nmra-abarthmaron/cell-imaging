@@ -9,15 +9,21 @@ from process.cp_image_data import cp_image_data, image_stats
 
 dash.register_page(__name__)
 
+drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
+
+# Load platemap / well conditions
+pm = pd.read_csv('/fsx/processed-data/220929 Mattek 20x SD MIP TIFs/platemap.csv', index_col='filename')# Add condition labels to well dataframe
+# pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /platemap.csv', index_col='filename')# Add condition labels to well dataframe
+
 measurement = 'Mean_soma_Intensity_MedianIntensity_CellROX'
-data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_Image.csv'
-# data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-16/soma_image/2022-08-16_soma_image_Image.csv'
-data, pm = cp_image_data(data_path)
+data_path = '/fsx/processed-data/220929 Mattek 20x SD MIP TIFs/2022-10-11_soma_objects/2022-10-11_soma_objects_Image.csv'
+# data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-10-11_soma_objects/2022-10-11_soma_objects_Image.csv'
+data, pm = cp_image_data(data_path, pm, drop_columns)
 
 data.index = pm['condition']
 pm.index = pm['condition']
 conditions = pm.index.unique().tolist()
-ctrl_cond = ['NT-ctrl']
+ctrl_cond = ['ctrl']
 
 colorblind = ["#0173B2", "#DE8F05", "#029E73", "#D55E00", "#CC78BC",
             "#CA9161", "#FBAFE4", "#949494", "#ECE133", "#56B4E9"]
