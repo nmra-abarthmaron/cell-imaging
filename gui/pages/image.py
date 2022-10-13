@@ -4,33 +4,41 @@ import plotly.graph_objects as go
 import skimage.io as sio
 import pathlib
 import pandas as pd
+import numpy as np
 
 dash.register_page(__name__)
 
-exp_path = pathlib.Path('/fsx/processed-data/220811 96w 9 Gene KO /')
-exps = [x.name for x in exp_path.iterdir() if x.is_dir()]
-img_path = pathlib.Path(
-    '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects'
-)
-img_df = pd.read_csv(img_path / '220811_well_conditions.csv', index_col='condition')
+exp_path = pathlib.Path('/fsx/processed-data')
+exps = np.array([x.name for x in exp_path.iterdir() if x.is_dir()])
+
+# img_path = pathlib.Path(
+#     '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects'
+# )
+# img_df = pd.read_csv(img_path / '220811_well_conditions.csv', index_col='condition')
 
 layout = html.Div([
 
     html.Div([
-            dcc.RadioItems(['soma_mask', 'neurite_mask','soma_outlines'], 'soma_mask', 
+            dcc.RadioItems(['soma_mask', 'neurite_mask','soma_outlines'], 'soma_outlines', 
                             labelStyle={'display': 'block'},
                             id='segmentation-type'),
             html.Br(),
             html.Label('Experiment:'),
             dcc.Dropdown(
                 exps,
-                '2022-08-22_soma_objects',
+                '220811 96w 9 Gene KO ',
                 id='experiment-dropdown'
+            ),
+
+            html.Label('Analysis:'),
+            dcc.Dropdown(
+                value='2022-10-11_soma_objects',
+                id='analysis-dropdown'
             ),
 
             html.Br(),
             html.Label('Condition:'),
-            dcc.Dropdown(value=img_df.index[0], id='condition-dropdown'),
+            dcc.Dropdown(value='ctrl', id='condition-dropdown'),
 
             html.Br(),
             html.Label('Image:'),
@@ -68,19 +76,35 @@ layout = html.Div([
 
 # Set condition name options in image dropdown, given an experiment
 @callback(
-    Output('condition-dropdown', 'options'),
+    Output('analysis-dropdown', 'options'),
     Input('experiment-dropdown', 'value')
 )
-def set_image_options(condition):
-    return img_df.index.unique()
+def set_analysis_options(exp_name):
+    analysis_opts = [x.parts[-1] for x in (exp_path / exps[exps == exp_name])[0].glob('*')]
+    print(analysis_opts[0])
+    return analysis_opts
+    
+# Set condition name options in image dropdown, given an analysis
+@callback(
+    Output('condition-dropdown', 'options'),
+    Input('analysis-dropdown', 'value'),
+    State('experiment-dropdown', 'value')
+)
+def set_condition_options(analysis_name, exp_name):
+    platemap = pd.read_csv(exp_path / exp_name / 'platemap.csv')
+    platemap.index = platemap['condition']
+    return platemap.index.unique()
 
 # Set image name options in image dropdown, given a well condition
 @callback(
     Output('image-dropdown', 'options'),
-    Input('condition-dropdown', 'value')
+    Input('condition-dropdown', 'value'),
+    State('experiment-dropdown', 'value')
 )
-def set_image_options(condition):
-    return img_df.loc[condition].filename
+def set_image_options(condition, exp_name):
+    platemap = pd.read_csv(exp_path / exp_name / 'platemap.csv')
+    platemap.index = platemap['condition']
+    return platemap.loc[condition].filename
 
 # Set image name value in the image dropdown menu, contextually.
 # Contexts - default, next button, prev button
@@ -90,7 +114,7 @@ def set_image_options(condition):
     Input('prev-button', 'n_clicks'),
     Input('image-dropdown', 'options'),
     State('image-dropdown', 'value'),
-    prevent_initial_call=True
+    prevent_initial_call=False
 )
 def update_image_name(_0, _1, img_options, img_name):
     triggered_id = ctx.triggered_id
@@ -122,21 +146,23 @@ def prev_image(img_options, img_name):
     Input(component_id='image-dropdown', component_property='value'),
     Input('overlay-outlines', 'value'),
     Input('img-max-slider', 'value'),
-    Input('segmentation-type', 'value')
+    Input('segmentation-type', 'value'),
+    State('experiment-dropdown', 'value'),
+    State('analysis-dropdown', 'value')
     # Input(component_id='next-image-button', component_property='n_clicks')
 )
-def update_image(img_name, soma_outlines, max_intensity, seg_type):
+def update_image(img_name, soma_outlines, max_intensity, seg_type, exp_name, analysis_name):
 
     # Load outline file
     # img_name = pd.read_json(img_name)
     outline_name = img_name + 'f'   # because cp saves them as 'tiff' not 'tif'
-    outline = sio.imread(img_path / seg_type / outline_name)
+    outline = sio.imread(exp_path / exp_name / analysis_name / seg_type / outline_name)
     outline = outline.astype(object)
     outline[outline == 0] = None
 
     # This is kinda a hack, should be done with the cp image csv
     ch_names = [405, 488, 561, 647]
-    img = sio.imread(img_path.parent /'max_projections'/ img_name.replace('tif', 'tif'))
+    img = sio.imread(exp_path / exp_name /'max_projections'/ img_name.replace('tif', 'tif'))
 
     # Set max intensity
     img[img > (img.max() * max_intensity)] = img.max() * max_intensity
