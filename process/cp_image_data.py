@@ -8,11 +8,11 @@ def cp_image_data(data_path, pm, drop_columns):
 
     # Load processed cellprofiler data from csv
     data = pd.read_csv(data_path)
-
     # Set index to well name
     morphology_file = 'FileName_TMRM'
     data.index = data[morphology_file]
-
+    pm.index = pm['filename']
+    
     # Remove unwanted columns
     drop_columns = np.array(drop_columns).astype(str).flatten()
     for col in drop_columns:
