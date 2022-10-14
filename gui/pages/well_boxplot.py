@@ -55,7 +55,7 @@ layout = html.Div([
     dcc.Graph(id='image-boxplots')
 ])
 
-# Set condition name options in image dropdown, given an experiment
+# Set options in analysis dropdown, given an experiment name
 @callback(
     Output('wb-analysis-dropdown', 'options'),
     Input('wb-experiment-dropdown', 'value')
@@ -65,7 +65,7 @@ def set_analysis_options(exp_name):
     analysis_opts = [x.parts[-1] for x in sub_dirs]
     return analysis_opts
 
-# Set measurement name options in measurement dropdown, given an experiment
+# Set options in measurement dropdown, given an analysis name and experiment name
 @callback(
     Output('measurement-dropdown', 'options'),
     Input('wb-analysis-dropdown', 'value'),
@@ -76,8 +76,9 @@ def set_analysis_options(analysis_name, exp_name):
     pm = pd.read_csv(exp_path / exp_name / 'platemap.csv')
     data_path = exp_path / exp_name / analysis_name / (analysis_name + '_Image.csv')
     data, pm = cp_image_data(data_path, pm, drop_columns)
-    # print(data.head())
     return data.columns
+
+# Select between multi ch and single ch figure. 
 @callback(
     Output(component_id='image-boxplots', component_property='figure'),
     Input(component_id='measurement-dropdown', component_property='value'),

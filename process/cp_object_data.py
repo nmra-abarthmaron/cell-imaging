@@ -4,23 +4,17 @@ from scipy.stats import mannwhitneyu, ttest_ind
 from math import comb
 import statsmodels.formula.api as smf
 
-def cp_object_data():
+def cp_object_data(data_path, pm, drop_columns):
 
-    data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_soma.csv'
-    drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
     morphology_file = 'FileName_TMRM'
-
-    # Load platemap / well conditions
-    pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/soma_outlines/220811_well_conditions.csv', index_col='filename')# Add condition labels to well dataframe
-
     # Load processed cellprofiler data from csv
     data = pd.read_csv(data_path)
-
-    # Set index to well name
     data.index = data[morphology_file]
+    pm.index = pm['filename']
 
     # Create soma 'platemap' (condition list)
     pm_soma = pd.DataFrame()
+    # print(pm.index.unique.shape)
     pm_soma['condition'] = pm.loc[data[morphology_file]]['condition']
     data['filename'] = pm_soma.index
 
@@ -28,6 +22,10 @@ def cp_object_data():
     drop_columns = np.array(drop_columns).astype(str).flatten()
     for col in drop_columns:
         data = data.drop(data.columns[data.columns.str.contains(col)], axis=1)
+
+    # # Reindex data by platemap filenames to make sure row order is correct
+    # data = data.reindex(pm.index)
+
     pm = pm_soma
 
     # Set conditions to index
@@ -37,8 +35,9 @@ def cp_object_data():
     data['condition'] = data.index
 
     # Remove 'no_dye' condition
-    data = data.drop('no_dye', axis=0)
-    pm = pm.drop('no_dye', axis=0)
+    if 'no_dye' in data.index:
+        data = data.drop('no_dye', axis=0)
+        pm = pm.drop('no_dye', axis=0)
 
     return data, pm
 
