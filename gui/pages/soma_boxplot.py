@@ -63,7 +63,7 @@ def set_analysis_options(exp_name):
     Input('sb-analysis-dropdown', 'value'),
     State('sb-experiment-dropdown', 'value')
 )
-def set_analysis_options(analysis_name, exp_name):
+def set_measurement_options(analysis_name, exp_name):
     # Load data
     pm = pd.read_csv(exp_path / exp_name / 'platemap.csv')
     data_path = exp_path / exp_name / analysis_name / (analysis_name + '_soma.csv')
