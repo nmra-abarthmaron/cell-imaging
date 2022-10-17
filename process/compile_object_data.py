@@ -21,12 +21,13 @@ def compile_object_data(data_path, pm, drop_columns):
     path_parts = list(data_path.parts)
     path_parts[-1] = path_parts[-1].replace('_soma.csv', '_Image.csv')
     data_path = pathlib.Path(*path_parts)
+    print(data_path)
     image_data = pd.read_csv(data_path)
     image_data.index = image_data['ImageNumber']
 
     # Convert from per-soma measuremnt to per-image measurements
     data = pd.DataFrame(data = 0, index=image_data.index, columns=soma_data.columns)
-    print(image_data.index) 
+    # print(image_data.index) 
     for i in image_data.index:
         data.loc[i] = soma_data.loc[i].mean(axis=0)
 
@@ -37,8 +38,10 @@ def compile_object_data(data_path, pm, drop_columns):
     drop_columns = np.array(drop_columns).astype(str).flatten()
     for col in drop_columns:
         data = data.drop(data.columns[data.columns.str.contains(col)], axis=1)
-
+    # print(data.head())
+    # print(pm.head())
     # Reindex data by platemap filenames to make sure row order is correct
+    pm.index = pm['filename']
     data = data.reindex(pm.index)
 
     # Set conditions to index
@@ -55,10 +58,11 @@ def compile_object_data(data_path, pm, drop_columns):
     data = data - data.mean(axis=0)
     data = data / data.std(axis=0)
 
+    # print(data.columns.tolist())
+
     # Remove a column (feature) if any values in that col are NA
     data = data.drop(columns=data.columns[data.isna().any()].tolist())
     pca = PCA(n_components=20, random_state=2)
-    print(data.head())
     latent_data = pca.fit_transform(data) # Excluding the no dye controls
     reducer = TSNE(n_components=2, learning_rate='auto', init='pca', perplexity=3, random_state=2)
     # reducer = umap.UMAP(n_neighbors=5, random_state=4)
