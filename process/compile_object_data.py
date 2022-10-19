@@ -21,7 +21,6 @@ def compile_object_data(data_path, pm, drop_columns):
     path_parts = list(data_path.parts)
     path_parts[-1] = path_parts[-1].replace('_soma.csv', '_Image.csv')
     data_path = pathlib.Path(*path_parts)
-    print(data_path)
     image_data = pd.read_csv(data_path)
     image_data.index = image_data['ImageNumber']
 

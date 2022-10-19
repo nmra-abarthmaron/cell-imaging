@@ -18,12 +18,12 @@ from run_cp_pipeline import run_cp_pipeline
 #     '/fsx/processed-data/220811 96w 9 Gene KO /max_projections'
 # )
 mp_data_path = pathlib.Path(
-    '/fsx/processed-data/220929 BC Nucleofection vs Not D10 iNs/Mattek 20x SD MIP TIFs/max_projections'
+    '/fsx/processed-data/220929 CellVis Plastic 20x SD MIP TIFs/max_projections'
 )
 
 # Path for cp pipeline
 cp_pipeline_path = pathlib.Path(
-    '/home/ubuntu/cell-imaging/cellprofiler_pipelines/2022-10-11_soma_objects.cppipe'
+    '/home/ubuntu/cell-imaging/cellprofiler_pipelines/2022-10-17_soma_objects_CellVis.cppipe'
 )
 
 # # Create max projections (if they do not already exist)

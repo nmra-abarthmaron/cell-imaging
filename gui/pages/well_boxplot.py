@@ -36,17 +36,20 @@ layout = html.Div([
         dcc.Dropdown(
             exps,
             '220811 96w 9 Gene KO ',
+            # '220929 CellVis Plastic 20x SD MIP TIFs',
             id='wb-experiment-dropdown'
         ),
 
         html.Label('Analysis:'),
         dcc.Dropdown(
             value='2022-10-11_soma_objects',
+            # value='2022-10-17_soma_objects_CellVis',
             id='wb-analysis-dropdown'
         ),
         html.Label('Measurement:'),
         dcc.Dropdown(
-            value='Mean_soma_Intensity_MedianIntensity_CellROX',
+            # value='Mean_soma_Intensity_MedianIntensity_CellROX',
+            value='Median_soma_Intensity_MeanIntensity_CellROX',
             # value='Intensity_MedianIntensity_CellROX',
             id='measurement-dropdown'
         ),
