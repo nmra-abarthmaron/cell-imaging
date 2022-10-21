@@ -18,7 +18,7 @@ exps = np.array([x.name for x in exp_path.iterdir() if x.is_dir()])
 # pm = pd.read_csv('/fsx/processed-data/220929 Mattek 20x SD MIP TIFs/platemap.csv', index_col='filename')# Add condition labels to well dataframe
 # pm = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /platemap.csv', index_col='filename')# Add condition labels to well dataframe
 
-measurement = 'Mean_soma_Intensity_MedianIntensity_CellROX'
+measurement = 'Median_soma_Intensity_MeanIntensity_CellROX'
 # data_path = '/fsx/processed-data/220929 Mattek 20x SD MIP TIFs/2022-10-11_soma_objects/2022-10-11_soma_objects_Image.csv'
 # csv_name = '2022-10-11_soma_objects_Image.csv'
 # data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-10-11_soma_objects/2022-10-11_soma_objects_Image.csv'
@@ -104,10 +104,11 @@ def select_plot_type(measurement, exp_name, analysis_name):
 
     # Return plotting fn
     if multi_channels:
-        return update_multi_ch_fig(data, pm, measurement, channel_names)
+        fig = update_multi_ch_fig(data, pm, measurement, channel_names)
     else:
-        return update_single_ch_fig(data, pm, measurement)
+        fig = update_single_ch_fig(data, pm, measurement)
 
+    return fig
 
 def update_multi_ch_fig(data, pm, measurement, ch_names):
     html.Br(),

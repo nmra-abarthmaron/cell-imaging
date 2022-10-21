@@ -27,6 +27,7 @@ dependencies:
 - jupyterlab
 - pycytominer
 - statsmodels
+- python-kaleido
 - pip:
     - cellprofiler==4.2.4
     - scikit-image
