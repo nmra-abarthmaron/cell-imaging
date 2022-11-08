@@ -28,6 +28,9 @@ dependencies:
 - pycytominer
 - statsmodels
 - python-kaleido
+- pyarrow
+- fsspec
+- s3fs
 - pip:
     - cellprofiler==4.2.4
     - scikit-image
