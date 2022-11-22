@@ -1,4 +1,4 @@
-name: cell-imaging-2
+name: cell-imaging
 
 channels:
 - conda-forge
