@@ -1,4 +1,4 @@
-name: cell-imaging
+name: cell-imaging-2
 
 channels:
 - conda-forge
@@ -27,10 +27,6 @@ dependencies:
 - jupyterlab
 - pycytominer
 - statsmodels
-- python-kaleido
-- pyarrow
-- fsspec
-- s3fs
 - pip:
     - cellprofiler==4.2.4
     - scikit-image
