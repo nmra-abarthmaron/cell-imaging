@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:424
 GitHash:
-ModuleCount:21
+ModuleCount:20
 HasImagePlaneDetails:False
 
 Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -73,7 +73,7 @@ CorrectIlluminationCalculate:[module_num:5|svn_version:'Unknown'|variable_revisi
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:All: First cycle
+    Calculate function for each image individually, or based on all images?:Each
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
@@ -98,7 +98,7 @@ CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revisi
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:All: First cycle
+    Calculate function for each image individually, or based on all images?:Each
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
@@ -123,7 +123,7 @@ CorrectIlluminationCalculate:[module_num:7|svn_version:'Unknown'|variable_revisi
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:All: First cycle
+    Calculate function for each image individually, or based on all images?:Each
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
@@ -293,13 +293,3 @@ ExportToSpreadsheet:[module_num:20|svn_version:'Unknown'|variable_revision_numbe
     Combine these object measurements with those of the previous object?:No
     File name:DATA.csv
     Use the object name for the file name?:Yes
-
-OverlayOutlines:[module_num:21|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:False|wants_pause:False]
-    Display outlines on a blank image?:No
-    Select image on which to display outlines:LysoTracker_eq
-    Name the output image:OrigOverlay
-    Outline display mode:Color
-    Select method to determine brightness of outlines:Max of image
-    How to outline:Inner
-    Select outline color:#00F500
-    Select objects to display:DAPI_nuclei
