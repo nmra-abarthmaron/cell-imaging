@@ -73,7 +73,7 @@ CorrectIlluminationCalculate:[module_num:5|svn_version:'Unknown'|variable_revisi
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:Each
+    Calculate function for each image individually, or based on all images?:All: First cycle
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
@@ -98,7 +98,7 @@ CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revisi
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:Each
+    Calculate function for each image individually, or based on all images?:All: First cycle
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
@@ -123,7 +123,7 @@ CorrectIlluminationCalculate:[module_num:7|svn_version:'Unknown'|variable_revisi
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:Each
+    Calculate function for each image individually, or based on all images?:All: First cycle
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
