@@ -2,7 +2,7 @@ CellProfiler Pipeline: http://www.cellprofiler.org
 Version:5
 DateRevision:424
 GitHash:
-ModuleCount:20
+ModuleCount:22
 HasImagePlaneDetails:False
 
 Images:[module_num:1|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:['To begin creating your project, use the Images module to compile a list of files and/or folders that you want to analyze. You can also specify a set of rules to include only the desired files in your selected folders.']|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -270,7 +270,37 @@ MeasureObjectSizeShape:[module_num:19|svn_version:'Unknown'|variable_revision_nu
     Calculate the Zernike features?:No
     Calculate the advanced features?:Yes
 
-ExportToSpreadsheet:[module_num:20|svn_version:'Unknown'|variable_revision_number:13|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+OverlayOutlines:[module_num:20|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Display outlines on a blank image?:Yes
+    Select image on which to display outlines:None
+    Name the output image:soma_outlines
+    Outline display mode:Grayscale
+    Select method to determine brightness of outlines:Max of image
+    How to outline:Outer
+    Select outline color:Red
+    Select objects to display:cytoplasm_outlines
+
+SaveImages:[module_num:21|svn_version:'Unknown'|variable_revision_number:16|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+    Select the type of image to save:Image
+    Select the image to save:soma_outlines
+    Select method for constructing file names:From image filename
+    Select image name for file prefix:DAPI
+    Enter single file name:OrigBlue
+    Number of digits:4
+    Append a suffix to the image file name?:No
+    Text to append to the image name:
+    Saved file format:tiff
+    Output file location:Default Output Folder sub-folder|soma_outlines
+    Image bit depth:8-bit integer
+    Overwrite existing files without warning?:Yes
+    When to save:Every cycle
+    Record the file and path information to the saved image?:Yes
+    Create subfolders in the output folder?:No
+    Base image folder:Elsewhere...|
+    How to save the series:T (Time)
+    Save with lossless compression?:Yes
+
+ExportToSpreadsheet:[module_num:22|svn_version:'Unknown'|variable_revision_number:13|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the column delimiter:Comma (",")
     Add image metadata columns to your object data file?:No
     Add image file and folder names to your object data file?:Yes
