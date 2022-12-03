@@ -112,9 +112,9 @@ IdentifyPrimaryObjects:[module_num:6|svn_version:'Unknown'|variable_revision_num
     # of deviations:2.0
     Thresholding method:Otsu
 
-RunCellpose:[module_num:7|svn_version:'Unknown'|variable_revision_number:3|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
+RunCellpose:[module_num:7|svn_version:'Unknown'|variable_revision_number:3|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:morphology_filtered
-    Expected object diameter:20
+    Expected object diameter:22
     Detection mode:cyto2
     Name the output object:soma
     Use GPU:No
@@ -191,7 +191,7 @@ SaveImages:[module_num:13|svn_version:'Unknown'|variable_revision_number:16|show
     Text to append to the image name:
     Saved file format:tiff
     Output file location:Default Output Folder sub-folder|soma_outlines
-    Image bit depth:8-bit integer
+    Image bit depth:16-bit integer
     Overwrite existing files without warning?:Yes
     When to save:Every cycle
     Record the file and path information to the saved image?:Yes
