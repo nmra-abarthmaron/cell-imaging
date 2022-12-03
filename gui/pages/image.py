@@ -8,7 +8,7 @@ import numpy as np
 
 dash.register_page(__name__)
 
-exp_path = pathlib.Path('/fsx/processed-data')
+exp_path = pathlib.Path('/lab/processed-data')
 exps = np.array([x.name for x in exp_path.iterdir() if x.is_dir()])
 
 # img_path = pathlib.Path(
