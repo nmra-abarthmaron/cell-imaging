@@ -18,12 +18,12 @@ from run_cp_pipeline import run_cp_pipeline
 #     '/fsx/processed-data/220811 96w 9 Gene KO /max_projections'
 # )
 mp_data_path = pathlib.Path(
-    '/lab/processed-data/220929 BC-EG H4 GBA Substrate/max_projections'
+    '/lab/processed-data/221121_45_Gene_KO_Screen/max_projections'
 )
 
 # Path for cp pipeline
 cp_pipeline_path = pathlib.Path(
-    '/home/ubuntu/cell-imaging/cellprofiler_pipelines/2022-11-22_edyta_analysis.cppipe'
+    '/home/ubuntu/cell-imaging/cellprofiler_pipelines/2022-12-03_soma_objects.cppipe'
 )
 
 # # Create max projections (if they do not already exist)

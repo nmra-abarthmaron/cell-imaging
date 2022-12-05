@@ -18,9 +18,9 @@ colorblind = ["#0173B2", "#DE8F05", "#029E73", "#D55E00", "#CC78BC",
 
 
 measurement = 'Mean_soma_Intensity_MedianIntensity_CellROX'
-exp_path = pathlib.Path('/fsx/processed-data')
+exp_path = pathlib.Path('/lab/processed-data')
 exps = np.array([x.name for x in exp_path.iterdir() if x.is_dir()])
-drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
+drop_columns = pd.read_csv('/lab/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
 # data, pm = cp_image_data(data_path)
 # data, pm = compile_object_data(data_path, pm, drop_columns)
 

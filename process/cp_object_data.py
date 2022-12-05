@@ -6,7 +6,8 @@ import statsmodels.formula.api as smf
 
 def cp_object_data(data_path, pm, drop_columns):
 
-    morphology_file = 'FileName_TMRM'
+    # morphology_file = 'FileName_TMRM'
+    morphology_file = 'FileName_morphology'
     # Load processed cellprofiler data from csv
     data = pd.read_csv(data_path)
     data.index = data[morphology_file]

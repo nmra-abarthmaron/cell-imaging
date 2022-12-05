@@ -9,7 +9,8 @@ def cp_image_data(data_path, pm, drop_columns):
     # Load processed cellprofiler data from csv
     data = pd.read_csv(data_path)
     # Set index to well name
-    morphology_file = 'FileName_TMRM'
+    # morphology_file = 'FileName_TMRM'
+    morphology_file = 'FileName_morphology'
     data.index = data[morphology_file]
     pm.index = pm['filename']
     

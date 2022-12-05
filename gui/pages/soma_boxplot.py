@@ -10,8 +10,8 @@ from process.cp_object_data import cp_object_data, object_stats
 
 dash.register_page(__name__)
 
-drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
-exp_path = pathlib.Path('/fsx/processed-data')
+drop_columns = pd.read_csv('/lab/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
+exp_path = pathlib.Path('/lab/processed-data')
 exps = np.array([x.name for x in exp_path.iterdir() if x.is_dir()])
 
 measurement = 'Intensity_MedianIntensity_CellROX'

@@ -13,7 +13,7 @@ def compile_object_data(data_path, pm, drop_columns):
 
     # data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-22_soma_objects_soma.csv'
     # drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_soma_column_drop_list.csv', header=None, dtype=str)
-    morphology_file = 'FileName_TMRM'
+    morphology_file = 'FileName_morphology'
 
     # Load processed cellprofiler soma data from csv
     soma_data = pd.read_csv(data_path)

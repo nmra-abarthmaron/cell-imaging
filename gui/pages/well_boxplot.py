@@ -10,7 +10,7 @@ from process.cp_image_data import cp_image_data, image_stats
 
 dash.register_page(__name__)
 
-drop_columns = pd.read_csv('/fsx/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
+drop_columns = pd.read_csv('/lab/processed-data/220811 96w 9 Gene KO /2022-08-22_soma_objects/2022-08-30_soma_objects_image_column_drop_list.csv', header=None, dtype=str)
 exp_path = pathlib.Path('/lab/processed-data')
 exps = np.array([x.name for x in exp_path.iterdir() if x.is_dir()])
 
@@ -23,7 +23,7 @@ measurement = 'Median_soma_Intensity_MeanIntensity_CellROX'
 # csv_name = '2022-10-11_soma_objects_Image.csv'
 # data_path = '/fsx/processed-data/220811 96w 9 Gene KO /2022-10-11_soma_objects/2022-10-11_soma_objects_Image.csv'
 # data, pm = cp_image_data(data_path, pm, drop_columns)
-ctrl_cond = ['ctrl']
+ctrl_cond = ['NT']
 
 colorblind = ["#0173B2", "#DE8F05", "#029E73", "#D55E00", "#CC78BC",
             "#CA9161", "#FBAFE4", "#949494", "#ECE133", "#56B4E9"]
@@ -91,7 +91,7 @@ def set_measurement_options(analysis_name, exp_name):
 def select_plot_type(measurement, exp_name, analysis_name):
 
     # Check if measurement is multi-channel or single-channel
-    channel_names = ('LysoSensor', 'CellROX', 'TMRM', 'Syto')
+    channel_names = ('LysoSensor', 'CellROX', 'TMRM', 'morphology')
     multi_channels = any([x in measurement for x in channel_names])
 
     # Load data
