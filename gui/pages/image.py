@@ -156,6 +156,7 @@ def update_image(img_name, soma_outlines, max_intensity, seg_type, exp_name, ana
     # Load outline file
     # img_name = pd.read_json(img_name)
     outline_name = img_name + 'f'   # because cp saves them as 'tiff' not 'tif'
+    outline_name = outline_name.replace('488', '561')
     outline = sio.imread(exp_path / exp_name / analysis_name / seg_type / outline_name)
     outline = outline.astype(object)
     outline[outline == 0] = None

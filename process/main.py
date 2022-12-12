@@ -23,7 +23,7 @@ mp_data_path = pathlib.Path(
 
 # Path for cp pipeline
 cp_pipeline_path = pathlib.Path(
-    '/home/ubuntu/cell-imaging/cellprofiler_pipelines/2022-12-03_soma_objects.cppipe'
+    '/home/ubuntu/cell-imaging/cellprofiler_pipelines/2022-12-03_soma_segment.cppipe'
 )
 
 # # Create max projections (if they do not already exist)
