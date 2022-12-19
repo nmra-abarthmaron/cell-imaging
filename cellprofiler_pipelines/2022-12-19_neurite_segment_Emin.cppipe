@@ -333,7 +333,7 @@ MeasureImageSkeleton:[module_num:24|svn_version:'Unknown'|variable_revision_numb
 
 MeasureImageAreaOccupied:[module_num:25|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Measure the area occupied by:Binary Image
-    Select binary images to measure:neurite_mask
+    Select binary images to measure:neurite_mask, neurite_skeleton
     Select object sets to measure:
 
 MeasureColocalization:[module_num:26|svn_version:'Unknown'|variable_revision_number:5|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
@@ -393,7 +393,7 @@ ExportToSpreadsheet:[module_num:29|svn_version:'Unknown'|variable_revision_numbe
     Press button to select measurements:
     Representation of Nan/Inf:NaN
     Add a prefix to file names?:Yes
-    Filename prefix:2022-12-18_neurite_segment_
+    Filename prefix:2022-12-19_neurite_segment_
     Overwrite existing files without warning?:Yes
     Data to export:Do not use
     Combine these object measurements with those of the previous object?:No
