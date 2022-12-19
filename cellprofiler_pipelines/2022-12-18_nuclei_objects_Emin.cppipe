@@ -245,7 +245,7 @@ IdentifyPrimaryObjects:[module_num:14|svn_version:'Unknown'|variable_revision_nu
     Thresholding method:Otsu
 
 MeasureObjectIntensity:[module_num:15|svn_version:'Unknown'|variable_revision_number:4|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Select images to measure:dapi, egr1, map2
+    Select images to measure:cfos, dapi, egr1, map2
     Select objects to measure:nuclei
 
 MeasureObjectIntensityDistribution:[module_num:16|svn_version:'Unknown'|variable_revision_number:6|show_window:False|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
