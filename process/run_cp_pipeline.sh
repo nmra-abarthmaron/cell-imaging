@@ -1,10 +1,10 @@
 #!/bin/bash
 
-input_dir="/lab/raw-data/221214_EA_GenTONIK_SM/max_projections"
+input_dir="/lab/processed-data/220929 BC-EG H4 GBA Substrate/max_projections"
 # input_dir="/fsx/processed-data/220929 Mattek 20x SD MIP TIFs/max_projections"
-output_dir="/lab/processed-data/221214_EA_GenTONIK_SM/2022-12-19_neurite_segment_Emin"
+output_dir="/lab/processed-data/220929 BC-EG H4 GBA Substrate/2023-01-03_edyta_analysis"
 plugins_dir="/home/ubuntu/CellProfiler-plugins"
-cppipe_path='/home/ubuntu/cell-imaging/cellprofiler_pipelines/2022-12-19_neurite_segment_Emin.cppipe'
+cppipe_path='/home/ubuntu/cell-imaging/cellprofiler_pipelines/2023-01-03_edyta_analysis.cppipe'
 
 #conda init /bin/bash
 #conda activate cell-imaging-2
