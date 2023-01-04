@@ -68,12 +68,12 @@ Groups:[module_num:4|svn_version:'Unknown'|variable_revision_number:2|show_windo
 CorrectIlluminationCalculate:[module_num:5|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:DAPI
     Name the output image:DAPI_illum
-    Select how the illumination function is calculated:Background
+    Select how the illumination function is calculated:Regular
     Dilate objects in the final averaged image?:No
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:All: First cycle
+    Calculate function for each image individually, or based on all images?:Each
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
@@ -93,12 +93,12 @@ CorrectIlluminationCalculate:[module_num:5|svn_version:'Unknown'|variable_revisi
 CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:GCase
     Name the output image:GCase_illum
-    Select how the illumination function is calculated:Background
+    Select how the illumination function is calculated:Regular
     Dilate objects in the final averaged image?:No
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:All: First cycle
+    Calculate function for each image individually, or based on all images?:Each
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
@@ -118,12 +118,12 @@ CorrectIlluminationCalculate:[module_num:6|svn_version:'Unknown'|variable_revisi
 CorrectIlluminationCalculate:[module_num:7|svn_version:'Unknown'|variable_revision_number:2|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
     Select the input image:LysoTracker
     Name the output image:LysoTracker_illum
-    Select how the illumination function is calculated:Background
+    Select how the illumination function is calculated:Regular
     Dilate objects in the final averaged image?:No
     Dilation radius:1
     Block size:60
     Rescale the illumination function?:Yes
-    Calculate function for each image individually, or based on all images?:All: First cycle
+    Calculate function for each image individually, or based on all images?:Each
     Smoothing method:Gaussian Filter
     Method to calculate smoothing filter size:Manually
     Approximate object diameter:10
@@ -333,7 +333,7 @@ SaveImages:[module_num:23|svn_version:'Unknown'|variable_revision_number:16|show
     Output file location:Default Output Folder sub-folder|illum
     Image bit depth:32-bit floating point
     Overwrite existing files without warning?:Yes
-    When to save:First cycle
+    When to save:Every cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
@@ -353,7 +353,7 @@ SaveImages:[module_num:24|svn_version:'Unknown'|variable_revision_number:16|show
     Output file location:Default Output Folder sub-folder|illum
     Image bit depth:32-bit floating point
     Overwrite existing files without warning?:Yes
-    When to save:First cycle
+    When to save:Every cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
@@ -373,7 +373,7 @@ SaveImages:[module_num:25|svn_version:'Unknown'|variable_revision_number:16|show
     Output file location:Default Output Folder sub-folder|illum
     Image bit depth:32-bit floating point
     Overwrite existing files without warning?:Yes
-    When to save:First cycle
+    When to save:Every cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
