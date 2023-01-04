@@ -331,9 +331,9 @@ SaveImages:[module_num:23|svn_version:'Unknown'|variable_revision_number:16|show
     Text to append to the image name:
     Saved file format:tiff
     Output file location:Default Output Folder sub-folder|illum
-    Image bit depth:8-bit integer
+    Image bit depth:32-bit floating point
     Overwrite existing files without warning?:Yes
-    When to save:Every cycle
+    When to save:First cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
@@ -351,9 +351,9 @@ SaveImages:[module_num:24|svn_version:'Unknown'|variable_revision_number:16|show
     Text to append to the image name:
     Saved file format:tiff
     Output file location:Default Output Folder sub-folder|illum
-    Image bit depth:8-bit integer
+    Image bit depth:32-bit floating point
     Overwrite existing files without warning?:Yes
-    When to save:Every cycle
+    When to save:First cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
@@ -371,9 +371,9 @@ SaveImages:[module_num:25|svn_version:'Unknown'|variable_revision_number:16|show
     Text to append to the image name:
     Saved file format:tiff
     Output file location:Default Output Folder sub-folder|illum
-    Image bit depth:8-bit integer
+    Image bit depth:32-bit floating point
     Overwrite existing files without warning?:Yes
-    When to save:Every cycle
+    When to save:First cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
@@ -393,7 +393,7 @@ SaveImages:[module_num:26|svn_version:'Unknown'|variable_revision_number:16|show
     Output file location:Default Output Folder sub-folder|max_projections_corrected
     Image bit depth:8-bit integer
     Overwrite existing files without warning?:Yes
-    When to save:Last cycle
+    When to save:Every cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
@@ -413,7 +413,7 @@ SaveImages:[module_num:27|svn_version:'Unknown'|variable_revision_number:16|show
     Output file location:Default Output Folder sub-folder|max_projections_corrected
     Image bit depth:8-bit integer
     Overwrite existing files without warning?:Yes
-    When to save:Last cycle
+    When to save:Every cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
@@ -433,7 +433,7 @@ SaveImages:[module_num:28|svn_version:'Unknown'|variable_revision_number:16|show
     Output file location:Default Output Folder sub-folder|max_projections_corrected
     Image bit depth:8-bit integer
     Overwrite existing files without warning?:Yes
-    When to save:Last cycle
+    When to save:Every cycle
     Record the file and path information to the saved image?:Yes
     Create subfolders in the output folder?:No
     Base image folder:Elsewhere...|
