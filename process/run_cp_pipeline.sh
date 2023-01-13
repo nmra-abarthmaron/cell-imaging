@@ -1,10 +1,10 @@
 #!/bin/bash
 
-input_dir="/lab/processed-data/220929 BC-EG H4 GBA Substrate/max_projections"
+input_dir="/lab/processed-data/EXP_JSM002_NGN_DIV18_wholeplate/max_projections"
 # input_dir="/fsx/processed-data/220929 Mattek 20x SD MIP TIFs/max_projections"
-output_dir="/lab/processed-data/220929 BC-EG H4 GBA Substrate/2023-01-03_edyta_analysis"
+output_dir="/lab/processed-data/EXP_JSM002_NGN_DIV18_wholeplate/2023-01-09_tdp43_analysis"
 plugins_dir="/home/ubuntu/CellProfiler-plugins"
-cppipe_path='/home/ubuntu/cell-imaging/cellprofiler_pipelines/2023-01-03_edyta_analysis.cppipe'
+cppipe_path='/home/ubuntu/cell-imaging/cellprofiler_pipelines/2023-01-09_jessie_tdp-43.cppipe'
 
 #conda init /bin/bash
 #conda activate cell-imaging-2
