@@ -208,7 +208,7 @@ RunCellpose:[module_num:13|svn_version:'Unknown'|variable_revision_number:3|show
     Expected object diameter:25
     Detection mode:custom
     Name the output object:cytoplasm_outlines
-    Use GPU:Yes
+    Use GPU:No
     Use averaging:Yes
     Supply nuclei image as well?:Yes
     Select the nuclei image:DAPI_corrected
