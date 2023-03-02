@@ -272,7 +272,7 @@ SaveImages:[module_num:20|svn_version:'Unknown'|variable_revision_number:16|show
     Select the type of image to save:Image
     Select the image to save:Threshold
     Select method for constructing file names:From image filename
-    Select image name for file prefix:TMRM_pre_illum
+    Select image name for file prefix:NeuO_pre_illum
     Enter single file name:OrigBlue
     Number of digits:4
     Append a suffix to the image file name?:No
