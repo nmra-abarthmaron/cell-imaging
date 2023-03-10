@@ -36,7 +36,7 @@ def max_project_PE(data_dir, overwrite_stacks=True):
     img_dims = tif.shape
 
     for prefix in fov_prefixes:
-        for ch in channels:
+        for ch in channels[::-1]:
             
             # Get all filenames associated with a specific fov and channel
             z_section_files = [x.name for x in 
