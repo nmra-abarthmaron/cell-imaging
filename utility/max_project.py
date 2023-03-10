@@ -132,8 +132,12 @@ def cellpose_stack(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch=None):
             fname
         )
         # Save results
+        save_dir = cellpose_dir / experiment / measurement
+        if not save_dir.exists():
+            save_dir.mkdir(parents=True)
+            
         tifffile.imwrite(
-            cellpose_dir / experiment / measurement / fname,
+            save_dir / fname,
             img,
             metadata={'axes': 'CYX'}, 
             imagej=True,
