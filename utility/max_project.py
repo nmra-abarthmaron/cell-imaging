@@ -66,7 +66,7 @@ def max_project_PE(data_dir, overwrite_stacks=True):
             else:
                 skimage.io.imsave(data_dir.parents[0] / 'MIPs' / z_section_files[0], mip)
 
-def cellpose_stack(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch=None):
+def write_cellpose_images(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch=None):
     """
     Write images to a directory for cellpose training. If two channels are
     specified they will be combined. Images will be tagged with experiment and
@@ -114,7 +114,7 @@ def cellpose_stack(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch=None):
 
             # Get filename for the fov prefix and channel. 'p01' defines first
             # z-plane, 'sk1fk1fl1.tiff' is fixed and means nothing.
-            fname = prefix + 'p01' + ch + 'sk1fk1fl1.tiff'
+            fname = prefix + 'p01-' + ch + 'sk1fk1fl1.tiff'
 
             # Load 
             tif = skimage.io.imread(data_dir / fname)
@@ -135,7 +135,7 @@ def cellpose_stack(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch=None):
         save_dir = cellpose_dir / experiment / measurement
         if not save_dir.exists():
             save_dir.mkdir(parents=True)
-            
+
         tifffile.imwrite(
             save_dir / fname,
             img,
