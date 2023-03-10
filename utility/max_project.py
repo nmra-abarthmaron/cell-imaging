@@ -36,7 +36,7 @@ def max_project_PE(data_dir, overwrite_stacks=True):
     img_dims = tif.shape
 
     for prefix in fov_prefixes:
-        for ch in channels[::-1]:
+        for ch in channels:
             
             # Get all filenames associated with a specific fov and channel
             z_section_files = [x.name for x in 
@@ -110,7 +110,7 @@ def write_cellpose_images(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch
             img_dims[1])
         ).astype('uint16')
 
-        for i_ch, ch in enumerate(channels):
+        for i_ch, ch in enumerate(channels[::-1]):
 
             # Get filename for the fov prefix and channel. 'p01' defines first
             # z-plane, 'sk1fk1fl1.tiff' is fixed and means nothing.
