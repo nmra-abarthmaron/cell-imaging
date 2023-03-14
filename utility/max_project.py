@@ -118,6 +118,14 @@ def write_cellpose_images(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch
 
             # Load 
             tif = skimage.io.imread(data_dir / fname)
+
+            # Z-score & rescale
+            tif = tif - tif.mean()
+            tif = tif / tif.std()
+            tif = tif - tif.min()
+            tif = tif * 1e3
+
+            # Store
             img[i_ch, :, :] = tif
         
         # Make sure primary_ch is the channel name in saved file
