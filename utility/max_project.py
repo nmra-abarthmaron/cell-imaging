@@ -3,6 +3,8 @@ import tifffile
 import numpy as np
 from pathlib import Path
 import os
+import pandas as pd
+import cv2
 
 def max_project_PE(data_dir, overwrite_stacks=True):
     """
@@ -152,6 +154,120 @@ def write_cellpose_images(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch
             compression=None,
             dtype='uint16'
         )
+
+
+def write_image_qc_stack(raw_data_dir, filename, analysis_name, fname):
+
+    save_dir = Path(str(raw_data_dir).replace('raw-data', 'processed-data'))
+
+    # Load cellprofiler Image data
+    cp_image_data = pd.read_csv(
+        [f for f in (save_dir / analysis_name).glob(analysis_name + '*' + 'Image.csv')][0]
+    )
+    # Load platemap
+    platemap = pd.read_csv(save_dir / 'platemap.csv')
+
+    # Append well position, row & col to data
+    cp_image_data['well_position'] = cp_image_data[fname].apply(
+        lambda fname : chr(int(fname[1:3])+64) + fname[4:6]
+    )
+    cp_image_data['row'] = cp_image_data[filename].apply(
+        lambda fname : int(fname[1:3])
+    )
+    cp_image_data['col'] = cp_image_data[filename].apply(
+        lambda fname : int(fname[4:6])
+    )
+    # Merge platemap and data
+    cp_image_data = cp_image_data.merge(platemap, on='well_position')
+
+    # Allocate image array, TODO: dynamically set image dimensions
+    img_stack = np.zeros(
+        (cp_image_data.shape[0], 1080, 1080)
+    )
+    img_stack = img_stack.astype('uint16')
+
+    for i_file, row in cp_image_data.iterrows():
+        text = row['well_position'] + ' - ' + row['crispr'] + ', ' + \
+            row['concentration'] + ' ' + row['treatment']
+        tif = skimage.io.imread(raw_data_dir / 'Images' / row[filename])
+        cv2.putText(
+            tif, 
+            text, 
+            (10,20), 
+            fontFace=cv2.FONT_HERSHEY_COMPLEX, 
+            fontScale=0.8, 
+            color=2**16, 
+            thickness=1, 
+            lineType=cv2.LINE_AA
+        )
+        img_stack[i_file, :, :] = tif
+
+    save_fname = filename.split('_')[1] + '_' + save_dir.parents[0].name + \
+        '_' + save_dir.name + '.tiff'
+    tifffile.imwrite(
+        save_dir / save_fname, 
+        img_stack, 
+        metadata={'axes': 'ZYX'}, 
+        imagej=True, 
+        compression='lzw', 
+        dtype='uint16')
+
+
+def write_segmentation_qc_stack(raw_data_dir, filename, analysis_name, fname, seg_name):
+
+    save_dir = Path(str(raw_data_dir).replace('raw-data', 'processed-data'))
+
+    # Load cellprofiler Image data
+    cp_image_data = pd.read_csv(
+        [f for f in (save_dir / analysis_name).glob(analysis_name + '*' + 'Image.csv')][0]
+    )
+    # Load platemap
+    platemap = pd.read_csv(save_dir / 'platemap.csv')
+
+    # Append well position, row & col to data
+    cp_image_data['well_position'] = cp_image_data[fname].apply(
+        lambda fname : chr(int(fname[1:3])+64) + fname[4:6]
+    )
+    cp_image_data['row'] = cp_image_data[filename].apply(
+        lambda fname : int(fname[1:3])
+    )
+    cp_image_data['col'] = cp_image_data[filename].apply(
+        lambda fname : int(fname[4:6])
+    )
+    # Merge platemap and data
+    cp_image_data = cp_image_data.merge(platemap, on='well_position')
+
+    # Allocate image array, TODO: dynamically set image dimensions
+    img_stack = np.zeros(
+        (cp_image_data.shape[0], 1080, 1080)
+    )
+    img_stack = img_stack.astype('uint16')
+
+    for i_file, row in cp_image_data.iterrows():
+        text = row['well_position'] + ' - ' + row['crispr'] + ', ' + \
+            row['concentration'] + ' ' + row['treatment']
+        tif = skimage.io.imread(save_dir / analysis_name / seg_name / row[filename])
+        cv2.putText(
+            tif, 
+            text, 
+            (10,20), 
+            fontFace=cv2.FONT_HERSHEY_COMPLEX, 
+            fontScale=0.8, 
+            color=2**16, 
+            thickness=1, 
+            lineType=cv2.LINE_AA
+        )
+        img_stack[i_file, :, :] = tif
+
+    save_fname = analysis_name + '_' + seg_name + '_' + \
+        save_dir.parents[0].name + '_' + save_dir.name + '.tiff'
+    tifffile.imwrite(
+        save_dir / analysis_name / save_fname, 
+        img_stack, 
+        metadata={'axes': 'ZYX'}, 
+        imagej=True, 
+        compression='lzw', 
+        dtype='uint16')
 
 def max_project(data_path, save_dir, overwrite=False):
     """
