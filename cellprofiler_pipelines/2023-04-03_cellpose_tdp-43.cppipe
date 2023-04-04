@@ -360,7 +360,7 @@ MeasureObjectNeighbors:[module_num:23|svn_version:'Unknown'|variable_revision_nu
     Select colormap:Oranges
 
 OverlayOutlines:[module_num:24|svn_version:'Unknown'|variable_revision_number:4|show_window:True|notes:[]|batch_state:array([], dtype=uint8)|enabled:True|wants_pause:False]
-    Display outlines on a blank image?:No
+    Display outlines on a blank image?:Yes
     Select image on which to display outlines:MAP2_corrected
     Name the output image:soma_outlines
     Outline display mode:Grayscale
