@@ -242,7 +242,7 @@ FilterObjects:[module_num:16|svn_version:'Unknown'|variable_revision_number:10|s
     Name the objects removed by the filter:RemovedObjects
     Select the measurement to filter by:AreaShape_EquivalentDiameter
     Filter using a minimum measurement value?:Yes
-    Minimum value:32
+    Minimum value:25
     Filter using a maximum measurement value?:No
     Maximum value:1.0
     Allow fuzzy feature matching?:No
