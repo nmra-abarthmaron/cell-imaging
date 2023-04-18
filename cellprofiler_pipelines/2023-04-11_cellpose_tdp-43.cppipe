@@ -436,7 +436,7 @@ ExportToSpreadsheet:[module_num:28|svn_version:'Unknown'|variable_revision_numbe
     Press button to select measurements:
     Representation of Nan/Inf:NaN
     Add a prefix to file names?:Yes
-    Filename prefix:2023-04-03_cellpose_tdp-43_
+    Filename prefix:2023-04-11_cellpose_tdp-43_
     Overwrite existing files without warning?:Yes
     Data to export:Do not use
     Combine these object measurements with those of the previous object?:No
