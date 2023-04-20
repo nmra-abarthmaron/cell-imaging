@@ -156,19 +156,19 @@ def write_cellpose_images(data_dir, cellpose_dir, primary_ch='ch3', secondary_ch
         )
 
 
-def write_image_qc_stack(raw_data_dir, filename, analysis_name, fname):
+def write_image_qc_stack(raw_data_dir, filename, analysis_name):
 
     save_dir = Path(str(raw_data_dir).replace('raw-data', 'processed-data'))
 
     # Load cellprofiler Image data
     cp_image_data = pd.read_csv(
-        [f for f in (save_dir / analysis_name).glob(analysis_name + '*' + 'Image.csv')][0]
+        [f for f in (save_dir / analysis_name).glob('*Image.csv')][0]
     )
     # Load platemap
     platemap = pd.read_csv(save_dir / 'platemap.csv')
 
     # Append well position, row & col to data
-    cp_image_data['well_position'] = cp_image_data[fname].apply(
+    cp_image_data['well_position'] = cp_image_data[filename].apply(
         lambda fname : chr(int(fname[1:3])+64) + fname[4:6]
     )
     cp_image_data['row'] = cp_image_data[filename].apply(
@@ -188,7 +188,7 @@ def write_image_qc_stack(raw_data_dir, filename, analysis_name, fname):
 
     for i_file, row in cp_image_data.iterrows():
         text = row['well_position'] + ' - ' + row['crispr'] + ', ' + \
-            row['concentration'] + ' ' + row['treatment']
+            str(row['concentration']) + ' ' + row['treatment']
         tif = skimage.io.imread(raw_data_dir / 'Images' / row[filename])
         cv2.putText(
             tif, 
@@ -213,19 +213,19 @@ def write_image_qc_stack(raw_data_dir, filename, analysis_name, fname):
         dtype='uint16')
 
 
-def write_segmentation_qc_stack(raw_data_dir, filename, analysis_name, fname, seg_name):
+def write_segmentation_qc_stack(raw_data_dir, filename, analysis_name, seg_name):
 
     save_dir = Path(str(raw_data_dir).replace('raw-data', 'processed-data'))
 
     # Load cellprofiler Image data
     cp_image_data = pd.read_csv(
-        [f for f in (save_dir / analysis_name).glob(analysis_name + '*' + 'Image.csv')][0]
+        [f for f in (save_dir / analysis_name).glob('*Image.csv')][0]
     )
     # Load platemap
     platemap = pd.read_csv(save_dir / 'platemap.csv')
 
     # Append well position, row & col to data
-    cp_image_data['well_position'] = cp_image_data[fname].apply(
+    cp_image_data['well_position'] = cp_image_data[filename].apply(
         lambda fname : chr(int(fname[1:3])+64) + fname[4:6]
     )
     cp_image_data['row'] = cp_image_data[filename].apply(
@@ -245,8 +245,12 @@ def write_segmentation_qc_stack(raw_data_dir, filename, analysis_name, fname, se
 
     for i_file, row in cp_image_data.iterrows():
         text = row['well_position'] + ' - ' + row['crispr'] + ', ' + \
-            row['concentration'] + ' ' + row['treatment']
-        tif = skimage.io.imread(save_dir / analysis_name / seg_name / row[filename])
+            str(row['concentration']) + ' ' + row['treatment']
+        try:
+            tif = skimage.io.imread(save_dir / analysis_name / seg_name / row[filename])
+        except:
+            print(save_dir / analysis_name / seg_name / row[filename])
+            break
         cv2.putText(
             tif, 
             text, 
